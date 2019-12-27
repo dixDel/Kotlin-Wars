@@ -10,14 +10,14 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        var fight = Combat()
+        var fight = Combat(fightOutputTextView)
         var isMatchEnded = false
 
         while (!isMatchEnded) {
             isMatchEnded = fight.playRound()
         }
 
-        fightOutputTextView.text = "Guerre terminée !"
-        fight.showResults(fightOutputTextView)
+        fightOutputTextView.text = "${fightOutputTextView.text}\nGuerre terminée !"
+        fight.showResults()
     }
 }
