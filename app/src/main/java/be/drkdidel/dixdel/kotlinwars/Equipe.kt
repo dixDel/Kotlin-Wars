@@ -1,5 +1,6 @@
 package be.drkdidel.dixdel.kotlinwars
 
+import android.util.Log
 import kotlin.random.Random
 import kotlin.random.nextInt
 
@@ -40,13 +41,46 @@ class Equipe(val name: String, nbFightersMax: Int = 100) {
 
     fun attack(foe: Equipe) {
         var team = getFightingTeam()
+        var foes = foe.getFightingTeam()
+        var isFoeFighting = true
+        var cnt = 0
+
+        while (isFoeFighting && cnt < team.count()) {
+            val fighter = team[cnt]
+
+            Log.d("EQUIPE", "${fighter.fullname}: $foes")
+            sortFoes(fighter, foes)
+            Log.d("EQUIPE", "${fighter.fullname}: $foes")
+            cnt++
+        }
+    }
+
+    private fun sortFoes(
+        fighter: Personnage,
+        foes: ArrayList<Personnage>
+    ) {
+        if (fighter is Paladin || fighter is Magicien) {
+            foes.sortWith(object : Comparator<Personnage> {
+                override fun compare(p0: Personnage, p1: Personnage): Int = when {
+                    p0 is Assassin && p1 is Paladin || p0 is Magicien -> 1
+                    else -> -1
+                }
+            })
+        } else {
+            foes.sortWith(object : Comparator<Personnage> {
+                override fun compare(p0: Personnage?, p1: Personnage?): Int = when {
+                    p0 is Paladin && p1 is Magicien || p0 is Assassin -> 1
+                    else -> -1
+                }
+            })
+        }
     }
 
     private fun getFightingTeam(): ArrayList<Personnage> {
         val team = ArrayList<Personnage>()
         var hasFighters = true
         var cnt = 0
-        output.add("Équipe de ${name}")
+        output.add("Équipe de $name")
         while (hasFighters && cnt < fightingTeamSize) {
             val fighter = getFighter()
             if (fighter != null) {
