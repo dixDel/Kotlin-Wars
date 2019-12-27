@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         fightOutputTextView.text = String.format(
-            "${fightOutputTextView.text}\n%s",
+            "${fightOutputTextView.text}\n\n%s",
             getString(R.string.fightEndMessage)
         )
         fight.showResults()

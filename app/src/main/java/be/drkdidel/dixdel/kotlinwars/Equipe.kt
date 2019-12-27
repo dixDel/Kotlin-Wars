@@ -1,13 +1,34 @@
 package be.drkdidel.dixdel.kotlinwars
 
-class Equipe(val name: String) {
+import kotlin.random.Random
+import kotlin.random.nextInt
+
+class Equipe(val name: String, nbFightersMax: Int = 100) {
 
     private val fightingTeamSize: Int = 5
+    private val nbAssassinsMax: Int = Random.nextInt(10..20)
+    private val nbMagiciensMax: Int = Random.nextInt(15..25)
 
+    private var fighters: ArrayList<Personnage> = ArrayList()
     private var nbPaladins: Int = 0
     private var nbMagiciens: Int = 0
     private var nbAssassins: Int = 0
     var output = ArrayList<String>()
+
+    init {
+        for (i in 0..nbFightersMax) {
+            if (nbAssassins < nbAssassinsMax) {
+                nbAssassins++
+                fighters.add(Assassin(name, nbAssassins))
+            } else if (nbMagiciens < nbMagiciensMax) {
+                nbMagiciens++
+                fighters.add(Magicien(name, nbMagiciens))
+            } else {
+                nbPaladins++
+                fighters.add(Paladin(name, nbPaladins))
+            }
+        }
+    }
 
     fun nbSurvivants(): Int {
         return 0
@@ -40,7 +61,11 @@ class Equipe(val name: String) {
         return team
     }
 
-    private fun getFighter(): Personnage {
-        return Paladin("Pal")
+    private fun getFighter(): Personnage? {
+        var fighter: Personnage? = null
+        if (fighters.count() > 0) {
+            fighter = fighters.removeAt(Random.nextInt(fighters.count()))
+        }
+        return fighter
     }
 }

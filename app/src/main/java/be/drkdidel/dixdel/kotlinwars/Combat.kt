@@ -16,6 +16,7 @@ class Combat(val textView: TextView) {
     init {
         display(lesBons.toString())
         display(lesMauvais.toString())
+        display("")
     }
 
     fun playRound(): Boolean {

@@ -1,7 +1,8 @@
 package be.drkdidel.dixdel.kotlinwars
 
-abstract class Personnage(open val name: String) : ClassePersonnage {
+abstract class Personnage(private val name: String, private val number: Int) : ClassePersonnage {
 
+    val fullname: String = "$name - $number"
     var ptsArmorMax = 0
     var ptsArmor: Int = 0
         set(value) {
