@@ -1,6 +1,8 @@
 package be.drkdidel.dixdel.kotlinwars
 
 import android.widget.TextView
+import kotlin.random.Random
+import kotlin.random.nextInt
 
 class Combat(val textView: TextView) {
 
@@ -18,7 +20,24 @@ class Combat(val textView: TextView) {
 
     fun playRound(): Boolean {
         cptRound++
+        display("Round $cptRound")
+        drawTurns()
+        firstAttacker.attack(secondAttacker)
+        display(firstAttacker.output.joinToString("\n"))
         return true
+    }
+
+    private fun drawTurns() {
+        when(Random.nextInt(0..1)) {
+            1 -> {
+                firstAttacker = lesMauvais
+                secondAttacker = lesBons
+            }
+            else -> {
+                firstAttacker = lesBons
+                secondAttacker = lesMauvais
+            }
+        }
     }
 
     fun showResults() {

@@ -17,7 +17,10 @@ class MainActivity : AppCompatActivity() {
             isMatchEnded = fight.playRound()
         }
 
-        fightOutputTextView.text = "${fightOutputTextView.text}\nGuerre terminée !"
+        fightOutputTextView.text = String.format(
+            "${fightOutputTextView.text}\n%s",
+            getString(R.string.fightEndMessage)
+        )
         fight.showResults()
     }
 }
