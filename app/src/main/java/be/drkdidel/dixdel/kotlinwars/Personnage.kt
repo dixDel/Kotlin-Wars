@@ -1,10 +1,14 @@
 package be.drkdidel.dixdel.kotlinwars
 
+import kotlin.random.Random
+import kotlin.random.nextInt
+
 abstract class Personnage(private val name: String, private val number: Int) : ClassePersonnage {
 
-    val fullname: String = "$name - $number"
-    var ptsArmorMax = 0
-    var ptsArmor: Int = 0
+    val fullname: String = "$name$number"
+
+    abstract val ptsArmorMax: Int
+    open var ptsArmor: Int = 0
         set(value) {
             if (value > ptsArmorMax) {
                 field = ptsArmorMax
@@ -12,30 +16,44 @@ abstract class Personnage(private val name: String, private val number: Int) : C
                 field = value
             }
         }
-    var ptsAttack = 0
-    var chanceCritical = 0
-    var criticalMultiplier = 0
+    val ptsAttack = 0
+    abstract var damageMin: Int
+    abstract var damageMax: Int
+    abstract var chanceCritical: Int
+    abstract var criticalMultiplier: Int
     var xp = 0.0
-    var damageMin = 0
-    var damageMax = 0
+    var output = ArrayList<String>()
 
     override fun attack(foe: Personnage) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        var damage = Random.nextInt(damageMin..damageMax)
+        if (Random.nextInt(1..100) <= chanceCritical) {
+            damage = criticalAction(damage)
+        }
+        if (damage > 0) {
+            output.add("$fullname a infligé à ${foe.fullname} $damage pts de dommage !")
+            foe.reduceArmor(damage)
+        }
+    }
+
+    override fun criticalAction(originalDamage: Int): Int {
+        output.add("$fullname a fait un coup CRITIQUE !")
+        return originalDamage * criticalMultiplier
     }
 
     override fun reduceArmor(damage: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        ptsArmor -= damage
+        output.add("$fullname a $ptsArmor/$ptsArmorMax pts d'armure.")
     }
 
     override fun isHurt(): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return ptsArmor < ptsArmorMax
     }
 
     override fun isKilled(): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return ptsArmor <= 0
     }
 
     override fun toString(): String {
-        return "$name: $ptsArmor pts d'armure"
+        return "$fullname: $ptsArmor pts d'armure"
     }
 }

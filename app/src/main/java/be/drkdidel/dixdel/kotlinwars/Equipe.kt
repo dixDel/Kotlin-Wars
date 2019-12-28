@@ -48,9 +48,12 @@ class Equipe(val name: String, nbFightersMax: Int = 100) {
         while (isFoeFighting && cnt < team.count()) {
             val fighter = team[cnt]
 
-            Log.d("EQUIPE", "${fighter.fullname}: $foes")
+            //Log.d("EQUIPE", "${fighter.fullname}: $foes")
             sortFoes(fighter, foes)
-            Log.d("EQUIPE", "${fighter.fullname}: $foes")
+            //Log.d("EQUIPE", "${fighter.fullname}: $foes")
+
+            isFoeFighting = attackFoe(fighter, foes)
+
             cnt++
         }
     }
@@ -60,19 +63,39 @@ class Equipe(val name: String, nbFightersMax: Int = 100) {
         foes: ArrayList<Personnage>
     ) {
         if (fighter is Paladin || fighter is Magicien) {
-            foes.sortWith(object : Comparator<Personnage> {
-                override fun compare(p0: Personnage, p1: Personnage): Int = when {
+            foes.sortWith(Comparator<Personnage> { p0, p1 ->
+                when {
                     p0 is Assassin && p1 is Paladin || p0 is Magicien -> 1
                     else -> -1
                 }
             })
         } else {
-            foes.sortWith(object : Comparator<Personnage> {
-                override fun compare(p0: Personnage?, p1: Personnage?): Int = when {
+            foes.sortWith(Comparator<Personnage> { p0, p1 ->
+                when {
                     p0 is Paladin && p1 is Magicien || p0 is Assassin -> 1
                     else -> -1
                 }
             })
+        }
+    }
+
+    private fun attackFoe(fighter: Personnage, foes: ArrayList<Personnage>): Boolean {
+        val foe: Personnage? = getOpponent(foes)
+        var isFoeFighting = true
+        if (foe != null) {
+            fighter.attack(foe)
+            output.addAll(fighter.output)
+            output.addAll(foe.output)
+        } else {
+            output.add("Il n'y a plus d'ennemis en état de combattre !")
+            isFoeFighting = false
+        }
+        return isFoeFighting
+    }
+
+    private fun getOpponent(foes: java.util.ArrayList<Personnage>): Personnage? {
+        return foes.firstOrNull {
+            !it.isKilled()
         }
     }
 
