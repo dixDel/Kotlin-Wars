@@ -11,6 +11,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         fightButton.setOnClickListener {
+            //@TODO auto scroll to top
             runFight()
         }
 
@@ -19,19 +20,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun runFight() {
-        fightOutputTextView.text = ""
-
-        val fight = Combat(fightOutputTextView)
+        val fight = Combat(this, fightOutputTextView)
         var isMatchEnded = false
 
         while (!isMatchEnded) {
             isMatchEnded = fight.playRound()
         }
 
-        fightOutputTextView.text = String.format(
-            "${fightOutputTextView.text}\n\n%s",
-            getString(R.string.fightEndMessage)
-        )
-        fight.showResults()
+        fightOutputTextView.text = fight.toString()
     }
 }

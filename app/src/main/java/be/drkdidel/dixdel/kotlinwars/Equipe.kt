@@ -14,7 +14,7 @@ class Equipe(val name: String, nbFightersMax: Int = 100) {
     private var nbPaladins: Int = 0
     private var nbMagiciens: Int = 0
     private var nbAssassins: Int = 0
-    var output = ArrayList<String>()
+    var output:ArrayList<String> = ArrayList()
 
     init {
         for (i in 0..nbFightersMax) {
@@ -32,30 +32,41 @@ class Equipe(val name: String, nbFightersMax: Int = 100) {
     }
 
     fun nbSurvivants(): Int {
-        return 0
+        return fighters.count()
     }
 
     override fun toString(): String {
         return "Équipe $name: $nbPaladins paladins, $nbMagiciens magiciens, $nbAssassins assassins."
     }
 
-    fun attack(foe: Equipe) {
+    fun attack(foeTeam: Equipe) {
         var team = getFightingTeam()
-        var foes = foe.getFightingTeam()
+        var foes = foeTeam.getFightingTeam()
+        /*
         var isFoeFighting = true
         var cnt = 0
 
+        //output.addAll(foeTeam.output) OutOfMemoryError
         while (isFoeFighting && cnt < team.count()) {
             val fighter = team[cnt]
 
-            //Log.d("EQUIPE", "${fighter.fullname}: $foes")
             sortFoes(fighter, foes)
-            //Log.d("EQUIPE", "${fighter.fullname}: $foes")
 
             isFoeFighting = attackFoe(fighter, foes)
 
             cnt++
         }
+        */
+
+        //dismissFightingTeam(team)
+        //dismissFightingTeam(foes)
+    }
+
+    private fun dismissFightingTeam(team: java.util.ArrayList<Personnage>) {
+        team.removeAll {
+            it.isKilled()
+        }
+        fighters.addAll(team)
     }
 
     private fun sortFoes(
@@ -103,6 +114,7 @@ class Equipe(val name: String, nbFightersMax: Int = 100) {
         val team = ArrayList<Personnage>()
         var hasFighters = true
         var cnt = 0
+        output.add("getFightingTeam:")
         output.add("Équipe de $name")
         while (hasFighters && cnt < fightingTeamSize) {
             val fighter = getFighter()
@@ -115,6 +127,8 @@ class Equipe(val name: String, nbFightersMax: Int = 100) {
             }
             cnt++
         }
+        output.add("FIN getFightingTeam")
+        output.add("")
         return team
     }
 
@@ -124,5 +138,19 @@ class Equipe(val name: String, nbFightersMax: Int = 100) {
             fighter = fighters.removeAt(Random.nextInt(fighters.count()))
         }
         return fighter
+    }
+
+    fun isStillFighting(): Boolean {
+        return fighters.isNotEmpty()
+    }
+
+    fun getOutput(): String {
+        val finalOutput = output.joinToString(System.lineSeparator())
+        cleanOutput()
+        return finalOutput
+    }
+
+    fun cleanOutput() {
+        output.clear()
     }
 }

@@ -56,4 +56,14 @@ abstract class Personnage(private val name: String, private val number: Int) : C
     override fun toString(): String {
         return "$fullname: $ptsArmor pts d'armure"
     }
+
+    fun getOutput(): String {
+        val finalOutput = output.joinToString(System.lineSeparator())
+        cleanOutput()
+        return finalOutput
+    }
+
+    fun cleanOutput() {
+        output.clear()
+    }
 }

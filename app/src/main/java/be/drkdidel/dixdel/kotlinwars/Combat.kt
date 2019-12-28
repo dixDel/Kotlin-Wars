@@ -1,10 +1,13 @@
 package be.drkdidel.dixdel.kotlinwars
 
+import android.content.Context
 import android.widget.TextView
 import kotlin.random.Random
 import kotlin.random.nextInt
 
-class Combat(val textView: TextView) {
+class Combat(val view: Context, val textView: TextView) {
+
+    private var output = ArrayList<String>()
 
     private val lesBons: Equipe = Equipe("les bons")
     private val lesMauvais: Equipe = Equipe("les mauvais")
@@ -14,18 +17,30 @@ class Combat(val textView: TextView) {
     private var secondAttacker: Equipe = lesMauvais
 
     init {
-        display(lesBons.toString())
-        display(lesMauvais.toString())
-        display("")
+        //@TODO output -> OutOfMemoryError, faut refaire display() et afficher directement
+        //textView.text = lesBons.toString()
+        output.add(lesBons.toString())
+        output.add(lesMauvais.toString())
+        output.add("")
     }
 
     fun playRound(): Boolean {
         cptRound++
-        display("Round $cptRound")
+        output.add("Round $cptRound")
+        output.add("--------")
+
         drawTurns()
+
         firstAttacker.attack(secondAttacker)
-        display(firstAttacker.output.joinToString("\n"))
-        return true
+        output.add(firstAttacker.getOutput())
+
+        if (secondAttacker.isStillFighting()) {
+            //secondAttacker.attack(firstAttacker)
+            output.add(secondAttacker.getOutput())
+        }
+
+        output.add("")
+        return !firstAttacker.isStillFighting() || !secondAttacker.isStillFighting()
     }
 
     private fun drawTurns() {
@@ -42,7 +57,14 @@ class Combat(val textView: TextView) {
     }
 
     fun showResults() {
-        display("Survivants après $cptRound rounds : ${lesBons.nbSurvivants()} bons, ${lesMauvais.nbSurvivants()} mauvais.")
+        output.add("Survivants après $cptRound rounds : ${lesBons.nbSurvivants()} bons, ${lesMauvais.nbSurvivants()} mauvais.")
+    }
+
+    override fun toString(): String {
+        output.add("----------------")
+        output.add(view.getString(R.string.fightEndMessage))
+        showResults()
+        return output.joinToString(System.lineSeparator())
     }
 
     fun display(texte: String) {
