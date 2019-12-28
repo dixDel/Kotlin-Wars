@@ -42,11 +42,11 @@ class Equipe(val name: String, nbFightersMax: Int = 100) {
     fun attack(foeTeam: Equipe) {
         var team = getFightingTeam()
         var foes = foeTeam.getFightingTeam()
-        /*
         var isFoeFighting = true
         var cnt = 0
 
-        //output.addAll(foeTeam.output) OutOfMemoryError
+        output.add(foeTeam.getOutput())
+        /*
         while (isFoeFighting && cnt < team.count()) {
             val fighter = team[cnt]
 

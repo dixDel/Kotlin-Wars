@@ -35,7 +35,8 @@ class Combat(val view: Context, val textView: TextView) {
         output.add(firstAttacker.getOutput())
 
         if (secondAttacker.isStillFighting()) {
-            //secondAttacker.attack(firstAttacker)
+            output.add("Riposte !")
+            secondAttacker.attack(firstAttacker)
             output.add(secondAttacker.getOutput())
         }
 
