@@ -10,7 +10,18 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        var fight = Combat(fightOutputTextView)
+        fightButton.setOnClickListener {
+            runFight()
+        }
+
+        runFight()
+
+    }
+
+    private fun runFight() {
+        fightOutputTextView.text = ""
+
+        val fight = Combat(fightOutputTextView)
         var isMatchEnded = false
 
         while (!isMatchEnded) {
