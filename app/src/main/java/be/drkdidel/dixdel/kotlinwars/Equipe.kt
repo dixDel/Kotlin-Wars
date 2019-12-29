@@ -98,8 +98,14 @@ class Equipe(val name: String, nbFightersMax: Int = 100) {
                 val magicien: Magicien = fighter
                 magicien.team = team
             }
-            fighter.attack(foe)
-            output.add(fighter.getOutput())
+            var ass: Assassin? = null
+            if (foe is Assassin) {
+                ass = foe
+            }
+            if (ass == null || !ass.evadeAttack(fighter)) {
+                fighter.attack(foe)
+                output.add(fighter.getOutput()) // pas d'output si l'attaque a été esquivée donc afficherait une ligne vide
+            }
             output.add(foe.getOutput())
         } else {
             output.add("Il n'y a plus d'ennemis en état de combattre !")
