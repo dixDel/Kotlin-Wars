@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.transition.Visibility
 import android.view.View
 import android.widget.ScrollView
+import androidx.appcompat.app.AlertDialog
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -13,8 +14,18 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        searchButton.setOnClickListener {
+            //@todo case insensitive
+            //  scroll to first match
+            //  then next
+            var search = fightOutputTextView.text.indexOf(searchEditText.text.toString())
+            val alertDialog = AlertDialog.Builder(this)
+                .setTitle("test")
+                .setMessage("$search")
+            alertDialog.show()
+        }
+
         fightButton.setOnClickListener {
-            //@TODO auto scroll to top
             runFight()
         }
 

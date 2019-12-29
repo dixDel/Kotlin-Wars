@@ -4,4 +4,6 @@
     <string name="fightButtonLegend"><![CDATA[Fight !]]></string>
     <string name="scrollDownButtonLegend">Aller en bas</string>
     <string name="scrollUpButtonLegend">Aller en haut</string>
+    <string name="searchEditTextHint">Recherche</string>
+    <string name="searchButtonTitle">Rechercher</string>
 </resources>
