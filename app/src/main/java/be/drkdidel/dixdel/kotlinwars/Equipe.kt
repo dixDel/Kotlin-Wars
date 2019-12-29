@@ -184,9 +184,11 @@ class Equipe(val name: String, nbFightersMax: Int = 100) {
     }
 
     private fun giveHonorsTo(fighter: Personnage) {
-        val type = fighter.javaClass.simpleName
-        val size = honorSentences[type]!!.count() - 1
-        val sentence = honorSentences[type]!![Random.nextInt(0..size)]
-        output.add(String.format(sentence, fighter.fullname))
+        if (fighter.isKilled()) {
+            val type = fighter.javaClass.simpleName
+            val size = honorSentences[type]!!.count() - 1
+            val sentence = honorSentences[type]!![Random.nextInt(0..size)]
+            output.add(String.format(sentence, fighter.fullname))
+        }
     }
 }
