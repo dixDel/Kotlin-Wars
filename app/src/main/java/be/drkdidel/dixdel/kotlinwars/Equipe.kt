@@ -3,12 +3,32 @@ package be.drkdidel.dixdel.kotlinwars
 import android.util.Log
 import kotlin.random.Random
 import kotlin.random.nextInt
+import kotlin.reflect.typeOf
 
 class Equipe(val name: String, nbFightersMax: Int = 100) {
 
     private val fightingTeamSize: Int = 5
     private val nbAssassinsMax: Int = Random.nextInt(10..20)
     private val nbMagiciensMax: Int = Random.nextInt(15..25)
+    private val honorSentences: HashMap<String, Array<String>> = hashMapOf(
+        "Paladin" to arrayOf(
+            "%s a rendu l’âme...",
+            "%s a rendu les armes...",
+            "%s n’est plus, honorez sa mémoire !",
+            "%s mange les pissenlits par la racine.",
+            "Rest in pieces, %s"
+        ),
+        "Magicien" to arrayOf(
+            "%s n’est plus, son bâton s’est brisé...",
+            "Non, tu n’étais pas Gandalf, %s.",
+            "%s a déversé toute sa mana..."
+        ),
+        "Assassin" to arrayOf(
+            "Celle-là a eu du mal à passer, %s !",
+            "%s est au fond du trou.",
+            "Personne ne se souviendra de ce fourbe %s..."
+        )
+    )
 
     private var fighters: ArrayList<Personnage> = ArrayList()
     private var nbPaladins: Int = 0
@@ -107,6 +127,7 @@ class Equipe(val name: String, nbFightersMax: Int = 100) {
                 output.add(fighter.getOutput()) // pas d'output si l'attaque a été esquivée donc afficherait une ligne vide
             }
             output.add(foe.getOutput())
+            giveHonorsTo(foe)
         } else {
             output.add("Il n'y a plus d'ennemis en état de combattre !")
             isFoeFighting = false
@@ -160,5 +181,12 @@ class Equipe(val name: String, nbFightersMax: Int = 100) {
 
     fun cleanOutput() {
         output.clear()
+    }
+
+    private fun giveHonorsTo(fighter: Personnage) {
+        val type = fighter.javaClass.simpleName
+        val size = honorSentences[type]!!.count() - 1
+        val sentence = honorSentences[type]!![Random.nextInt(0..size)]
+        output.add(String.format(sentence, fighter.fullname))
     }
 }
