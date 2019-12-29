@@ -52,7 +52,7 @@ class Equipe(val name: String, nbFightersMax: Int = 100) {
 
             sortFoes(fighter, foes)
 
-            isFoeFighting = attackFoe(fighter, foes)
+            isFoeFighting = attackFoe(fighter, team, foes)
 
             cnt++
         }
@@ -90,10 +90,14 @@ class Equipe(val name: String, nbFightersMax: Int = 100) {
         }
     }
 
-    private fun attackFoe(fighter: Personnage, foes: ArrayList<Personnage>): Boolean {
+    private fun attackFoe(fighter: Personnage, team: ArrayList<Personnage>, foes: ArrayList<Personnage>): Boolean {
         val foe: Personnage? = getOpponent(foes)
         var isFoeFighting = true
         if (foe != null) {
+            if (fighter is Magicien) {
+                val magicien: Magicien = fighter
+                magicien.team = team
+            }
             fighter.attack(foe)
             output.add(fighter.getOutput())
             output.add(foe.getOutput())
