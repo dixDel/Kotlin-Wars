@@ -2,4 +2,6 @@
     <string name="app_name">Kotlin Wars</string>
     <string name="fightEndMessage"><![CDATA[Guerre terminée !]]></string>
     <string name="fightButtonLegend"><![CDATA[Fight !]]></string>
+    <string name="scrollDownButtonLegend">Aller en bas</string>
+    <string name="scrollUpButtonLegend">Aller en haut</string>
 </resources>

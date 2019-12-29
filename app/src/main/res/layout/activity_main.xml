@@ -42,4 +42,24 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/scrollView" />
 
+    <Button
+        android:id="@+id/scrollDownButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/scrollDownButtonLegend"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/fightButton"
+        app:layout_constraintTop_toTopOf="@+id/fightButton" />
+
+    <Button
+        android:id="@+id/scrollUpButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/scrollUpButtonLegend"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toStartOf="@+id/fightButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/fightButton" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
