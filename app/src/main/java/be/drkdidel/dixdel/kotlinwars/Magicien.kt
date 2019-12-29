@@ -5,8 +5,7 @@ import kotlin.random.nextInt
 
 class Magicien(faction: String, nbMagiciens: Int) : Personnage("$faction - Mago", nbMagiciens) {
 
-    override val ptsArmorMax: Int
-        get() = Random.nextInt(25..50)
+    override val ptsArmorMax: Int = Random.nextInt(25..50)
     override var ptsArmor = ptsArmorMax
     override var damageMin: Int
         get() = 10

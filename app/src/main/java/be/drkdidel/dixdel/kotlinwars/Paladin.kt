@@ -5,8 +5,7 @@ import kotlin.random.nextInt
 
 class Paladin(faction: String, number: Int) : Personnage("$faction - Pal", number) {
 
-    override val ptsArmorMax: Int
-        get() = Random.nextInt(100..150)
+    override val ptsArmorMax: Int = Random.nextInt(100..150)
     override var ptsArmor = ptsArmorMax
     override var damageMin = 2
     override var damageMax = 5

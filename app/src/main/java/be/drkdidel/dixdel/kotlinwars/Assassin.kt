@@ -5,8 +5,7 @@ import kotlin.random.nextInt
 
 class Assassin(faction: String, number: Int) : Personnage("$faction - Ass", number) {
 
-    override val ptsArmorMax: Int
-        get() = Random.nextInt(35..75)
+    override val ptsArmorMax: Int = Random.nextInt(35..75)
     override var ptsArmor = ptsArmorMax
     override var damageMin: Int
         get() = 15
