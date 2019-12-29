@@ -59,7 +59,7 @@ class Equipe(val name: String, nbFightersMax: Int = 100) {
         output.add("")
 
         dismissFightingTeam(team)
-        dismissFightingTeam(foes)
+        foeTeam.dismissFightingTeam(foes)
     }
 
     private fun dismissFightingTeam(team: java.util.ArrayList<Personnage>) {
