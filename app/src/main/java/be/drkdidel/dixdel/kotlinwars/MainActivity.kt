@@ -2,6 +2,7 @@ package be.drkdidel.dixdel.kotlinwars
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.ScrollView
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -22,6 +23,8 @@ class MainActivity : AppCompatActivity() {
     private fun runFight() {
         val fight = Combat(this, fightOutputTextView)
         var isMatchEnded = false
+
+        scrollView.fullScroll(ScrollView.FOCUS_UP)
 
         while (!isMatchEnded) {
             isMatchEnded = fight.playRound()
