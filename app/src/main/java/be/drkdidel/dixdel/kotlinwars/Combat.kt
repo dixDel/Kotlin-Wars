@@ -17,8 +17,6 @@ class Combat(val view: Context, val textView: TextView) {
     private var secondAttacker: Equipe = lesMauvais
 
     init {
-        //@TODO output -> OutOfMemoryError, faut refaire display() et afficher directement
-        //textView.text = lesBons.toString()
         output.add(lesBons.toString())
         output.add(lesMauvais.toString())
         output.add("")
@@ -66,15 +64,6 @@ class Combat(val view: Context, val textView: TextView) {
         output.add(view.getString(R.string.fightEndMessage))
         showResults()
         return output.joinToString(System.lineSeparator())
-    }
-
-    fun display(texte: String) {
-        var newText = ""
-        if (textView.text != "") {
-            newText = "\n"
-        }
-        newText += texte
-        textView.text = ("${textView.text}${newText}")
     }
 
 }

@@ -46,7 +46,7 @@ class Equipe(val name: String, nbFightersMax: Int = 100) {
         var cnt = 0
 
         output.add(foeTeam.getOutput())
-        /*
+        output.add("L'attaque de $name commence !")
         while (isFoeFighting && cnt < team.count()) {
             val fighter = team[cnt]
 
@@ -56,10 +56,10 @@ class Equipe(val name: String, nbFightersMax: Int = 100) {
 
             cnt++
         }
-        */
+        output.add("")
 
-        //dismissFightingTeam(team)
-        //dismissFightingTeam(foes)
+        dismissFightingTeam(team)
+        dismissFightingTeam(foes)
     }
 
     private fun dismissFightingTeam(team: java.util.ArrayList<Personnage>) {
@@ -95,8 +95,8 @@ class Equipe(val name: String, nbFightersMax: Int = 100) {
         var isFoeFighting = true
         if (foe != null) {
             fighter.attack(foe)
-            output.addAll(fighter.output)
-            output.addAll(foe.output)
+            output.add(fighter.getOutput())
+            output.add(foe.getOutput())
         } else {
             output.add("Il n'y a plus d'ennemis en état de combattre !")
             isFoeFighting = false
@@ -114,8 +114,7 @@ class Equipe(val name: String, nbFightersMax: Int = 100) {
         val team = ArrayList<Personnage>()
         var hasFighters = true
         var cnt = 0
-        output.add("getFightingTeam:")
-        output.add("Équipe de $name")
+        output.add("Équipe de \"$name\"")
         while (hasFighters && cnt < fightingTeamSize) {
             val fighter = getFighter()
             if (fighter != null) {
@@ -127,7 +126,6 @@ class Equipe(val name: String, nbFightersMax: Int = 100) {
             }
             cnt++
         }
-        output.add("FIN getFightingTeam")
         output.add("")
         return team
     }
