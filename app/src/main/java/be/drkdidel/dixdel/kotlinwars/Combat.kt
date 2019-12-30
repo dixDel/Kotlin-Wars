@@ -29,14 +29,26 @@ class Combat(val view: Context, val textView: TextView) {
 
         drawTurns()
 
-        firstAttacker.attack(secondAttacker)
+        var firstTeam = firstAttacker.getFightingTeam()
+        var secondTeam = secondAttacker.getFightingTeam()
         output.add(firstAttacker.getOutput())
+        output.add(secondAttacker.getOutput())
+
+        firstAttacker.attack(secondTeam)
+        secondAttacker.buryTheDeads()
+        output.add(firstAttacker.getOutput())
+        output.add(secondAttacker.getOutput())
 
         if (secondAttacker.isStillFighting()) {
             output.add("Riposte !")
-            secondAttacker.attack(firstAttacker)
+            secondAttacker.attack(firstTeam)
+            firstAttacker.buryTheDeads()
+            output.add(firstAttacker.getOutput())
             output.add(secondAttacker.getOutput())
         }
+
+        firstAttacker.dismissFightingTeam()
+        secondAttacker.dismissFightingTeam()
 
         output.add("")
         return !firstAttacker.isStillFighting() || !secondAttacker.isStillFighting()
