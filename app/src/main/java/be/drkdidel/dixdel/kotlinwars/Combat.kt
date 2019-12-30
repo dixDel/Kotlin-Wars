@@ -29,16 +29,16 @@ class Combat(val view: Context, val textView: TextView) {
 
         drawTurns()
 
-        var firstTeam = firstAttacker.getFightingTeam()
-        var secondTeam = secondAttacker.getFightingTeam()
+        firstAttacker.getFightingTeam()
+        secondAttacker.getFightingTeam()
         output.add(firstAttacker.getOutput())
         output.add(secondAttacker.getOutput())
 
-        launchAttack(firstAttacker, secondAttacker, secondTeam)
+        launchAttack(firstAttacker, secondAttacker)
 
         if (secondAttacker.isStillFighting()) {
             output.add("Riposte !")
-            launchAttack(secondAttacker, firstAttacker, firstTeam)
+            launchAttack(secondAttacker, firstAttacker)
         }
 
         firstAttacker.dismissFightingTeam()
@@ -48,8 +48,8 @@ class Combat(val view: Context, val textView: TextView) {
         return !firstAttacker.isStillFighting() || !secondAttacker.isStillFighting()
     }
 
-    private fun launchAttack(teamA: Equipe, teamB: Equipe, attackedFightingTeam: ArrayList<Personnage>) {
-        teamA.attack(attackedFightingTeam)
+    private fun launchAttack(teamA: Equipe, teamB: Equipe) {
+        teamA.attack(teamB.getFightingTeam())
         teamB.buryTheDeads()
         output.add(teamA.getOutput())
         output.add(teamB.getOutput())

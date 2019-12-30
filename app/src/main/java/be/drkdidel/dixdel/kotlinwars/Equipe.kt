@@ -1,9 +1,7 @@
 package be.drkdidel.dixdel.kotlinwars
 
-import android.util.Log
 import kotlin.random.Random
 import kotlin.random.nextInt
-import kotlin.reflect.typeOf
 
 class Equipe(val name: String, nbFightersMax: Int = 100) {
 
@@ -85,6 +83,7 @@ class Equipe(val name: String, nbFightersMax: Int = 100) {
 
     fun dismissFightingTeam() {
         fighters.addAll(fightingTeam)
+        fightingTeam.clear()
     }
 
     private fun sortFoes(
@@ -140,24 +139,26 @@ class Equipe(val name: String, nbFightersMax: Int = 100) {
     }
 
     fun getFightingTeam(): ArrayList<Personnage> {
-        val team = ArrayList<Personnage>()
-        var hasFighters = true
-        var cnt = 0
-        output.add("Équipe de \"$name\"")
-        while (hasFighters && cnt < fightingTeamSize) {
-            val fighter = getFighter()
-            if (fighter != null) {
-                team.add(fighter)
-                output.add(fighter.toString())
-            } else {
-                hasFighters = false
-                output.add("Plus de combattants !")
+        if (fightingTeam.count() == 0 && fighters.count() > 0) {
+            val team = ArrayList<Personnage>()
+            var hasFighters = true
+            var cnt = 0
+            output.add("Équipe de \"$name\"")
+            while (hasFighters && cnt < fightingTeamSize) {
+                val fighter = getFighter()
+                if (fighter != null) {
+                    team.add(fighter)
+                    output.add(fighter.toString())
+                } else {
+                    hasFighters = false
+                    output.add("Plus de combattants !")
+                }
+                cnt++
             }
-            cnt++
+            output.add("")
+            fightingTeam = team
         }
-        output.add("")
-        fightingTeam = team
-        return team
+        return fightingTeam
     }
 
     private fun getFighter(): Personnage? {
