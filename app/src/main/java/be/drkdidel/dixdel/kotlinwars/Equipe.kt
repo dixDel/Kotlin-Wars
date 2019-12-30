@@ -1,9 +1,7 @@
 package be.drkdidel.dixdel.kotlinwars
 
-import android.util.Log
 import kotlin.random.Random
 import kotlin.random.nextInt
-import kotlin.reflect.typeOf
 
 class Equipe(val name: String, nbFightersMax: Int = 100) {
 
@@ -34,6 +32,7 @@ class Equipe(val name: String, nbFightersMax: Int = 100) {
     private var nbPaladins: Int = 0
     private var nbMagiciens: Int = 0
     private var nbAssassins: Int = 0
+    private var fightingTeam: ArrayList<Personnage> = ArrayList()
     var output:ArrayList<String> = ArrayList()
 
     init {
@@ -59,34 +58,32 @@ class Equipe(val name: String, nbFightersMax: Int = 100) {
         return "Équipe $name: $nbPaladins paladins, $nbMagiciens magiciens, $nbAssassins assassins."
     }
 
-    fun attack(foeTeam: Equipe) {
-        var team = getFightingTeam()
-        var foes = foeTeam.getFightingTeam()
+    fun attack(foeTeam: ArrayList<Personnage>) {
         var isFoeFighting = true
         var cnt = 0
 
-        output.add(foeTeam.getOutput())
         output.add("L'attaque de $name commence !")
-        while (isFoeFighting && cnt < team.count()) {
-            val fighter = team[cnt]
+        while (isFoeFighting && cnt < fightingTeam.count()) {
+            val fighter = fightingTeam[cnt]
 
-            sortFoes(fighter, foes)
+            sortFoes(fighter, foeTeam)
 
-            isFoeFighting = attackFoe(fighter, team, foes)
+            isFoeFighting = attackFoe(fighter, fightingTeam, foeTeam)
 
             cnt++
         }
         output.add("")
-
-        dismissFightingTeam(team)
-        foeTeam.dismissFightingTeam(foes)
     }
 
-    private fun dismissFightingTeam(team: java.util.ArrayList<Personnage>) {
-        team.removeAll {
+    fun buryTheDeads() {
+        fightingTeam.removeAll {
             it.isKilled()
         }
-        fighters.addAll(team)
+    }
+
+    fun dismissFightingTeam() {
+        fighters.addAll(fightingTeam)
+        fightingTeam.clear()
     }
 
     private fun sortFoes(
@@ -141,24 +138,27 @@ class Equipe(val name: String, nbFightersMax: Int = 100) {
         }
     }
 
-    private fun getFightingTeam(): ArrayList<Personnage> {
-        val team = ArrayList<Personnage>()
-        var hasFighters = true
-        var cnt = 0
-        output.add("Équipe de \"$name\"")
-        while (hasFighters && cnt < fightingTeamSize) {
-            val fighter = getFighter()
-            if (fighter != null) {
-                team.add(fighter)
-                output.add(fighter.toString())
-            } else {
-                hasFighters = false
-                output.add("Plus de combattants !")
+    fun getFightingTeam(): ArrayList<Personnage> {
+        if (fightingTeam.count() == 0 && fighters.count() > 0) {
+            val team = ArrayList<Personnage>()
+            var hasFighters = true
+            var cnt = 0
+            output.add("Équipe de \"$name\"")
+            while (hasFighters && cnt < fightingTeamSize) {
+                val fighter = getFighter()
+                if (fighter != null) {
+                    team.add(fighter)
+                    output.add(fighter.toString())
+                } else {
+                    hasFighters = false
+                    output.add("Plus de combattants !")
+                }
+                cnt++
             }
-            cnt++
+            output.add("")
+            fightingTeam = team
         }
-        output.add("")
-        return team
+        return fightingTeam
     }
 
     private fun getFighter(): Personnage? {
