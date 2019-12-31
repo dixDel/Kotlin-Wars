@@ -6,8 +6,11 @@ import kotlin.random.nextInt
 abstract class Personnage(private val name: String, private val number: Int) : ClassePersonnage {
 
     val fullname: String = "$name$number"
+    val xpNextLevel = 10.0
+    abstract val levelUpArmor: Int
+    abstract val levelUpDamage: Int
 
-    abstract val ptsArmorMax: Int
+    abstract var ptsArmorMax: Int
     open var ptsArmor: Int = 0
         set(value) {
             if (value > ptsArmorMax) {
@@ -16,12 +19,12 @@ abstract class Personnage(private val name: String, private val number: Int) : C
                 field = value
             }
         }
-    val ptsAttack = 0
     abstract var damageMin: Int
     abstract var damageMax: Int
     abstract var chanceCritical: Int
     abstract var criticalMultiplier: Int
     var xp = 0.0
+    var level = 1
     var output = ArrayList<String>()
 
     override fun attack(foe: Personnage) {
@@ -32,7 +35,25 @@ abstract class Personnage(private val name: String, private val number: Int) : C
         if (damage > 0) {
             output.add("$fullname a infligé à ${foe.fullname} $damage pts de dommage !")
             foe.reduceArmor(damage)
+            gainXp(damage)
         }
+    }
+
+    private fun gainXp(damage: Int) {
+        xp += damage / damageMax * 5
+        if (xp >= xpNextLevel) {
+            levelUp()
+            xp = 0.0
+        }
+    }
+
+    private fun levelUp() {
+        level++
+        ptsArmorMax += levelUpArmor
+        ptsArmor += levelUpArmor
+        damageMin += levelUpDamage
+        damageMax += levelUpDamage
+        output.add("LEVEL UP ! $fullname est niveau $level ! Dmg: $damageMin à $damageMax; $ptsArmor/$ptsArmorMax pts d'armure.")
     }
 
     override fun criticalAction(originalDamage: Int): Int {
@@ -54,7 +75,7 @@ abstract class Personnage(private val name: String, private val number: Int) : C
     }
 
     override fun toString(): String {
-        return "$fullname: $ptsArmor pts d'armure"
+        return "$fullname: $ptsArmor/$ptsArmorMax pts d'armure"
     }
 
     fun getOutput(): String {

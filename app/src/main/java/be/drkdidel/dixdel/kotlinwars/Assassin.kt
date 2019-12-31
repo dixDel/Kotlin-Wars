@@ -5,16 +5,16 @@ import kotlin.random.nextInt
 
 class Assassin(faction: String, number: Int) : Personnage("$faction - Ass", number) {
 
-    override val ptsArmorMax: Int = Random.nextInt(35..75)
+    override val levelUpArmor: Int
+        get() = 7
+    override val levelUpDamage: Int
+        get() = 7
     val chanceEvade = 15
 
+    override var ptsArmorMax: Int = Random.nextInt(35..75)
     override var ptsArmor = ptsArmorMax
-    override var damageMin: Int
-        get() = 15
-        set(value) {}
-    override var damageMax: Int
-        get() = 30
-        set(value) {}
+    override var damageMin: Int = 15
+    override var damageMax: Int = 30
     override var chanceCritical: Int
         get() = 30
         set(value) {}
