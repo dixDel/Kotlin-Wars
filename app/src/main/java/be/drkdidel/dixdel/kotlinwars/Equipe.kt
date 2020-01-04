@@ -170,7 +170,7 @@ class Equipe(val name: String, nbFightersMax: Int = 100) {
     }
 
     fun isStillFighting(): Boolean {
-        return fighters.isNotEmpty()
+        return fighters.isNotEmpty() || fightingTeam.isNotEmpty()
     }
 
     fun getOutput(): String {
