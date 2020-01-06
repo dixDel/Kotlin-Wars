@@ -19,10 +19,8 @@ class MainActivity : AppCompatActivity() {
             //  scroll to first match
             //  then next
             var search = fightOutputTextView.text.indexOf(searchEditText.text.toString())
-            val alertDialog = AlertDialog.Builder(this)
-                .setTitle("test")
-                .setMessage("$search")
-            alertDialog.show()
+            var lineNumber = fightOutputTextView.layout.getLineForOffset(search)
+            scrollView.scrollTo(0, fightOutputTextView.layout.getLineTop(lineNumber))
         }
 
         fightButton.setOnClickListener {
