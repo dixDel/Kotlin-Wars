@@ -7,5 +7,6 @@ interface ClassePersonnage {
     fun reduceArmor(damage: Int)
     fun isHurt(): Boolean
     fun isKilled(): Boolean
+    override fun toString(): String
 
 }

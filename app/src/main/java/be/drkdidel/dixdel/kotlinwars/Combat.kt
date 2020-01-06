@@ -5,7 +5,7 @@ import android.widget.TextView
 import kotlin.random.Random
 import kotlin.random.nextInt
 
-class Combat(val view: Context, val textView: TextView) {
+class Combat(val view: Context, val textView: TextView): iCombat {
 
     private var output = ArrayList<String>()
 
@@ -22,7 +22,7 @@ class Combat(val view: Context, val textView: TextView) {
         output.add("")
     }
 
-    fun playRound(): Boolean {
+    override fun playRound(): Boolean {
         cptRound++
         output.add("Round $cptRound")
         output.add("--------")
@@ -68,7 +68,7 @@ class Combat(val view: Context, val textView: TextView) {
         }
     }
 
-    fun showResults() {
+    override fun showResults() {
         output.add("Survivants après $cptRound rounds : ${lesBons.nbSurvivants()} bons, ${lesMauvais.nbSurvivants()} mauvais.")
     }
 
