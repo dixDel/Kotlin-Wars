@@ -59,6 +59,28 @@ class Equipe(val name: String, nbFightersMax: Int = 100) {
     }
 
     fun attack(foeTeam: ArrayList<Personnage>) {
+        // Kotlin fonction locale
+        fun sortFoes(
+            fighter: Personnage,
+            foes: ArrayList<Personnage>
+        ) {
+            if (fighter is Paladin || fighter is Magicien) {
+                foes.sortWith(Comparator<Personnage> { p0, p1 ->
+                    when {
+                        p0 is Assassin && p1 is Paladin || p0 is Magicien -> 1
+                        else -> -1
+                    }
+                })
+            } else {
+                foes.sortWith(Comparator<Personnage> { p0, p1 ->
+                    when {
+                        p0 is Paladin && p1 is Magicien || p0 is Assassin -> 1
+                        else -> -1
+                    }
+                })
+            }
+        }
+
         var isFoeFighting = true
         var cnt = 0
 
@@ -86,27 +108,6 @@ class Equipe(val name: String, nbFightersMax: Int = 100) {
         fightingTeam.clear()
     }
 
-    private fun sortFoes(
-        fighter: Personnage,
-        foes: ArrayList<Personnage>
-    ) {
-        if (fighter is Paladin || fighter is Magicien) {
-            foes.sortWith(Comparator<Personnage> { p0, p1 ->
-                when {
-                    p0 is Assassin && p1 is Paladin || p0 is Magicien -> 1
-                    else -> -1
-                }
-            })
-        } else {
-            foes.sortWith(Comparator<Personnage> { p0, p1 ->
-                when {
-                    p0 is Paladin && p1 is Magicien || p0 is Assassin -> 1
-                    else -> -1
-                }
-            })
-        }
-    }
-
     private fun attackFoe(fighter: Personnage, foes: ArrayList<Personnage>): Boolean {
         val foe: Personnage? = getOpponent(foes)
         var isFoeFighting = true
@@ -123,6 +124,7 @@ class Equipe(val name: String, nbFightersMax: Int = 100) {
                 fighter.attack(foe)
                 output.add(fighter.getOutput()) // pas d'output si l'attaque a été esquivée donc afficherait une ligne vide
             }
+
             output.add(foe.getOutput())
             giveHonorsTo(foe)
         } else {
@@ -146,6 +148,14 @@ class Equipe(val name: String, nbFightersMax: Int = 100) {
             output.add("Équipe de \"$name\"")
             while (hasFighters && cnt < fightingTeamSize) {
                 val fighter = getFighter()
+                fighter?.let {
+                    team.add(it)
+                    output.add(it.toString())
+                } ?: run {
+                    hasFighters = false
+                    output.add("Plus de combattants !")
+                }
+                /*
                 if (fighter != null) {
                     team.add(fighter)
                     output.add(fighter.toString())
@@ -153,6 +163,7 @@ class Equipe(val name: String, nbFightersMax: Int = 100) {
                     hasFighters = false
                     output.add("Plus de combattants !")
                 }
+                */
                 cnt++
             }
             output.add("")

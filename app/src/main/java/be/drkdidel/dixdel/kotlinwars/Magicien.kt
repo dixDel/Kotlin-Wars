@@ -3,7 +3,7 @@ package be.drkdidel.dixdel.kotlinwars
 import kotlin.random.Random
 import kotlin.random.nextInt
 
-class Magicien(faction: String, nbMagiciens: Int) : Personnage("$faction - Mago", nbMagiciens) {
+class Magicien(val faction: String, val nbMagiciens: Int) : Personnage("$faction - Mago", nbMagiciens) {
 
     override val levelUpArmor: Int
         get() = 5
