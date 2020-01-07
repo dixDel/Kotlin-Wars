@@ -11,6 +11,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity() {
 
     private var previousPositionMatch = 0
+    private var previousCriteria = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,12 +28,18 @@ class MainActivity : AppCompatActivity() {
 
             val highlighted = "<font color='red'>${criteria.toUpperCase()}</font>" //@TODO restore original criteria
             var fullText = fightOutputTextView.text.toString()
+            fullText = fullText.replace("<font color='red'>", "");
+            fullText = fullText.replace("</font>", "");
+            fullText = fullText.replace(previousCriteria.toUpperCase(), previousCriteria)
+
             fullText = fullText.replace(criteria, highlighted, ignoreCase = true)
             //fullText = fullText.replace(Regex("($criteria)", RegexOption.IGNORE_CASE), highlighted)
             fullText = fullText.replace(System.lineSeparator(), "<br/>")
             fightOutputTextView.text = Html.fromHtml(fullText, Html.TO_HTML_PARAGRAPH_LINES_CONSECUTIVE)
 
             scrollView.scrollTo(0, fightOutputTextView.layout.getLineTop(lineNumber))
+
+            previousCriteria = criteria
         }
 
         // @TODO get indexOf starting from int matching scrollY
