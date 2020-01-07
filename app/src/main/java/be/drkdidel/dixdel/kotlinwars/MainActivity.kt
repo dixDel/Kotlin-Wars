@@ -25,9 +25,10 @@ class MainActivity : AppCompatActivity() {
             previousPositionMatch = positionMatch + 1
             val lineNumber = fightOutputTextView.layout.getLineForOffset(positionMatch)
 
-            val highlighted = "<font color='red'>$criteria</font>"
+            val highlighted = "<font color='red'>${criteria.toUpperCase()}</font>" //@TODO restore original criteria
             var fullText = fightOutputTextView.text.toString()
-            fullText = fullText.replace(criteria, highlighted)
+            fullText = fullText.replace(criteria, highlighted, ignoreCase = true)
+            //fullText = fullText.replace(Regex("($criteria)", RegexOption.IGNORE_CASE), highlighted)
             fullText = fullText.replace(System.lineSeparator(), "<br/>")
             fightOutputTextView.text = Html.fromHtml(fullText, Html.TO_HTML_PARAGRAPH_LINES_CONSECUTIVE)
 
