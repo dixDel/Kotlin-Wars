@@ -1,10 +1,12 @@
 package be.drkdidel.dixdel.kotlinwars
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Html
 import android.view.View
 import android.widget.ScrollView
+import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -15,14 +17,28 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         searchButton.setOnClickListener {
-            //@todo case insensitive
+            //@todo
             //  search backwards
             // search from current scroll position
-            var positionMatch = fightOutputTextView.text.indexOf(searchEditText.text.toString(), previousPositionMatch)
+            val criteria = searchEditText.text.toString()
+            val positionMatch = fightOutputTextView.text.indexOf(criteria, previousPositionMatch, ignoreCase = true)
             previousPositionMatch = positionMatch + 1
-            var lineNumber = fightOutputTextView.layout.getLineForOffset(positionMatch)
+            val lineNumber = fightOutputTextView.layout.getLineForOffset(positionMatch)
+
+            val highlighted = "<font color='red'>$criteria</font>"
+            var fullText = fightOutputTextView.text.toString()
+            fullText = fullText.replace(criteria, highlighted)
+            fullText = fullText.replace(System.lineSeparator(), "<br/>")
+            fightOutputTextView.text = Html.fromHtml(fullText, Html.TO_HTML_PARAGRAPH_LINES_CONSECUTIVE)
+
             scrollView.scrollTo(0, fightOutputTextView.layout.getLineTop(lineNumber))
         }
+
+        // @TODO get indexOf starting from int matching scrollY
+        /*
+        scrollView.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY -> ???
+        ) }
+         */
 
         fightButton.setOnClickListener {
             runFight()
